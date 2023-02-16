@@ -1,5 +1,7 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOneOptions, Repository } from "typeorm";
+import { JobApplicantDto } from "./dtos/job-applicant-dto.dto";
+import { UpdateJobApplicantDto } from "./dtos/update-job-applicant.dto";
 import { JobApplicant } from "./job-applicant.entity";
 
 export class JobApplicantService{
@@ -8,12 +10,13 @@ export class JobApplicantService{
         private readonly jobApplicantRepository: Repository<JobApplicant>
     ){}
 
-    createJobApplicant(_name: string, _age: number, _role: string, _experience: number|undefined){
+    createJobApplicant(body: JobApplicantDto){
+        const {name, age, role, experience} = body
       const newJobApplicant = this.jobApplicantRepository.create({
-        name: _name,
-        age: _age,
-        role: _role,
-        ...(_experience && {experience: _experience})
+        name: name,
+        age: age,
+        role: role,
+        ...(experience && {experience: experience})
       })
       return this.jobApplicantRepository.save(newJobApplicant)
     }
@@ -22,17 +25,16 @@ export class JobApplicantService{
         return this.jobApplicantRepository.find()
     }
 
-    getJobApplicant(_id: number){
-        return this.jobApplicantRepository.findOneBy({
-            id: _id
-        })
+    getJobApplicant(findOneOptions: FindOneOptions<JobApplicant>){
+        return this.jobApplicantRepository.findOne(findOneOptions)
     }
 
-    updateJobApplicant(_data: Partial<JobApplicant>){
+    updateJobApplicant(_data: UpdateJobApplicantDto){
        return this.jobApplicantRepository.update({id: _data.id}, {..._data})
     }
 
-    deleteJobApplicant(_id: number){
-        return this.jobApplicantRepository.delete({id: _id})
+    async deleteJobApplicant(findOneOptions: FindOneOptions<JobApplicant>){
+        const jobApplicant = await this.jobApplicantRepository.findOne(findOneOptions)
+        return this.jobApplicantRepository.delete(jobApplicant)
     }
 }

@@ -41,7 +41,9 @@ export class JobApplicantController{
     @Get('/getone/:id')
     async getOne(@Param('id') id: string){
        try {
-        const jobApplicant = await this.jobApplicantService.getJobApplicant(Number(id))
+        const jobApplicant = await this.jobApplicantService.getJobApplicant({where: {
+          id: Number(id)
+        }})
         if(Object.keys(jobApplicant).length != 0) return {is_success: true, job_applicant: jobApplicant}
     
        } catch (error) {
@@ -59,7 +61,7 @@ export class JobApplicantController{
     async add(@Body() body: JobApplicantDto){
      try {
         const {name, age, role, experience} = body
-        const jobApplicant = await this.jobApplicantService.createJobApplicant(name, age, role, experience)
+        const jobApplicant = await this.jobApplicantService.createJobApplicant(body)
   
         if(Object.keys(jobApplicant).length != 0) return {is_success: true, job_applicant: jobApplicant}
 
@@ -97,7 +99,11 @@ export class JobApplicantController{
     @Delete('/delete/:id')
     async delete(@Param('id') id: string){
        try {
-        await this.jobApplicantService.deleteJobApplicant(Number(id))
+        await this.jobApplicantService.deleteJobApplicant({
+          where: {
+            id: Number(id)
+          }
+        })
         return {is_success: true}
        } catch (error) {
           return {is_success: false}
