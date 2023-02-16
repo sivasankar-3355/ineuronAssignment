@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from "@nestjs/swagger/dist";
-import { JobApplicantDto } from "./dtos/job-applicant-dto.dto";
+import { JobApplicantDto, OneJobApplicant } from "./dtos/job-applicant-dto.dto";
 import { UpdateJobApplicantDto } from "./dtos/update-job-applicant.dto";
 import { JobApplicant } from "./job-applicant.entity";
 import { JobApplicantService } from "./job-applicant.service";
@@ -39,10 +39,10 @@ export class JobApplicantController{
         description: 'Internal server error',
       })
     @Get('/getone/:id')
-    async getOne(@Param('id') id: string){
+    async getOne(@Body() body: OneJobApplicant){
        try {
         const jobApplicant = await this.jobApplicantService.getJobApplicant({where: {
-          id: Number(id)
+          id: Number(body.id)
         }})
         if(Object.keys(jobApplicant).length != 0) return {is_success: true, job_applicant: jobApplicant}
     

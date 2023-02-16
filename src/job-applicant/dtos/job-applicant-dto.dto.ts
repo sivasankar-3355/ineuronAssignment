@@ -18,4 +18,8 @@ export class JobApplicantDto{
     experience: number;
 }
 
+export class OneJobApplicant{
+    id: string
+}
+
 
