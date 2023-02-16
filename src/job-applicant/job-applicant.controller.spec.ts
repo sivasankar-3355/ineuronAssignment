@@ -47,7 +47,7 @@ describe("JobApplicant Controller unit tests", () => {
     
       it("calling find get method", () => {
         const dto = new OneJobApplicant();
-        dto.id = '2';
+        dto.id = 2;
         jobApplicantController.getOne(dto);
         expect(spyService.getJobApplicant).toHaveBeenCalled();
       })

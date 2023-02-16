@@ -19,7 +19,9 @@ export class JobApplicantDto{
 }
 
 export class OneJobApplicant{
-    id: string
+    @IsDefined()
+    @IsNumber()
+    id: number
 }
 
 
