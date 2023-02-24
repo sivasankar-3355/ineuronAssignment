@@ -38,7 +38,7 @@ export class JobApplicantController{
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
-    @Get('/getone/')
+    @Post('/getone')
     async getOne(@Body() body: OneJobApplicant){
        try {
         const jobApplicant = await this.jobApplicantService.getJobApplicant({where: {
